@@ -11,4 +11,4 @@ class Course(models.Model):
 	image       = models.ImageField(upload_to='courses/image', verbose_name='Image', null=True, blank=True)
 
 	create_at   = models.DateTimeField('Create in ', auto_now_add=True)
-	update_at   = models.DateTimeField('Update in ', auto_now_add=True)
+	update_at   = models.DateTimeField('Update in ', auto_now=True)
