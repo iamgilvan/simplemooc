@@ -1,6 +1,13 @@
 from django.db import models
 
 # Create your models here.
+class CourseManager(models.Manager):
+	"""docstring for CourseMamodels.Manager"""
+	def Search(self, query):
+		return self.get_queryset().filter(
+			models.Q(name__icontains=query) |
+			models.Q(description__icontains=query)
+		)
 
 class Course(models.Model):
 	
@@ -12,3 +19,5 @@ class Course(models.Model):
 
 	create_at   = models.DateTimeField('Create in ', auto_now_add=True)
 	update_at   = models.DateTimeField('Update in ', auto_now=True)
+
+	objects = CourseManager()
