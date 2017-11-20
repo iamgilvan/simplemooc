@@ -29,4 +29,5 @@ class Course(models.Model):
 		"""docstring for Meta"""
 		verbose_name        = 'Curso'
 		verbose_name_plural = 'Cursos'
+		ordering            = ['name']
 			
