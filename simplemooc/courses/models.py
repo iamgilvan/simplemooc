@@ -21,3 +21,6 @@ class Course(models.Model):
 	update_at   = models.DateTimeField('Update in ', auto_now=True)
 
 	objects = CourseManager()
+
+	def __str__(self):
+		return self.name
