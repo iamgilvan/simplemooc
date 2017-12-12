@@ -138,3 +138,8 @@ EMAIL_HOST_PASSWORD = 'password'
 EMAIL_PORT          = 587
 
 #CONTACT_EMAIL       = 'emailtocontact@gmail.com'
+
+#Auth
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'core:home'
+LOGOUT_URL = 'accounts:logout'
