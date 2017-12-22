@@ -16,8 +16,16 @@ def dashboard(request):
 @login_required
 def edit(request):
     template_name = 'accounts/edit.html'
-    form = EditAccountForm()
     context = {}
+    #Preencher campos com informações do usuário cadastrado
+    if request.method == 'POST':
+        form = EditAccountForm(request.POST, instance=request.user)
+        if form.is_valid:
+            form.save()
+            form = EditAccountForm(instance=request.user)
+            context['sucess'] = True
+    else:
+        form = EditAccountForm(instance=request.user)
     context['form'] = form
     return render(request, template_name, context)
 
