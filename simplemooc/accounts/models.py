@@ -2,6 +2,7 @@ import re
 from django.db import models
 from django.core import validators
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
+from django.conf import settings
 
 # Create your models here.
 # Em settings deverá ser adicionado o AUTH_USER_MODEL para indicar este novo model
@@ -42,15 +43,37 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name        = 'Usuário'
         verbose_name_plural = 'Usuários'
+'''
+ Após isso vamos apagar o banco e as pastas migrations de accounts e courses.
+>mv db.sqlite3 db.sqlite3.old
+recriá-lo com o novo model
+>python manage.py makemigrations accounts
+>python manage.py makemigrations courses
+>python manage.py migrate 
+>python manage.py showmigrations
+criar um superuser
+>python manage.py createsuperuser
+>sqlite3 db.sqlite3 
+sqlite> PRAGMA table_info(accounts_user); # ver as colunas da nova tabela
+'''
 
-# Após isso vamos apagar o banco e as pastas migrations de accounts e courses.
-#>mv db.sqlite3 db.sqlite3.old
-#recriá-lo com o novo model
-#>python manage.py makemigrations accounts
-#>python manage.py makemigrations courses
-#>python manage.py migrate 
-#>python manage.py showmigrations
-#criar um superuser
-#>python manage.py createsuperuser
-#>sqlite3 db.sqlite3 
-#sqlite> PRAGMA table_info(accounts_user); # ver as colunas da nova tabela
+class PasswordReset(models.Model):
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, verbose_name='Usuário',
+        related_name='reset'
+    )
+
+    key = models.CharField('Chave', max_length=100, unique=True)
+    #Útil para controlar o tempo de utilização do token
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    #Útil para checar se o token enviado já foi utiliazado
+    comfirmed  = models.BooleanField('Confirmado?', default=False, blank=True)
+
+    def __str__(self):
+        return '{0} criado em {1}'.format(self.user, self.created_at)
+
+    class Meta:
+        verbose_name        = 'Nova senha'
+        verbose_name_plural = 'Novas Senhas'
+        ordering            = ['-created_at']
