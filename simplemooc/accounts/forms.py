@@ -4,8 +4,19 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+#Será um form normal. Não será um ModelForm, pois inicialmente não estará assoociado a nenhum outro model
+class PasswordResetForm(forms.Form):
+    email = forms.EmailField(label='E-mail')
+
+    #Validando email (Pode conter email existente na base)
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            return email
+        raise forms.ValidationError('Nenhum usuário encontrado com este email.')
+    
 # Esta classe foi cirada para adicionar o campo email
-# Ela extende a classe UserCreationForm e adiciona o amail
+# Ela extende a classe UserCreationForm e adiciona o email
 class RegisterForm(forms.ModelForm):
     
     password1 = forms.CharField(label='Senha', widget=forms.PasswordInput)
