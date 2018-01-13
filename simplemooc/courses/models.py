@@ -38,9 +38,9 @@ class Course(models.Model):
 			
 class Enrollment(models.Model):
 	STATUS_CHOICES  = (
-		(0, 'Pendente'),
-		(1, 'Aprovado'),
-		(2, 'Cancelado'),
+		(0, 'Pendant'),
+		(1, 'Approved'),
+		(2, 'Canceled'),
 	)
 
 	user = models.ForeignKey(
@@ -57,6 +57,11 @@ class Enrollment(models.Model):
 
 	create_at   = models.DateTimeField('Create in ', auto_now_add=True)
 	update_at   = models.DateTimeField('Update in ', auto_now=True)
+
+	#ativar o aluno
+	def active(self):
+		self.status = 1
+		self.save()
 
 	class Meta:
 		verbose_name        = 'Enrollment'
