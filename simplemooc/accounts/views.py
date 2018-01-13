@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, SetP
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.contrib import messages
 
 from simplemooc.core.utils import generate_hash_key
 
@@ -27,8 +28,9 @@ def edit(request):
         form = EditAccountForm(request.POST, instance=request.user)
         if form.is_valid:
             form.save()
-            form = EditAccountForm(instance=request.user)
-            context['sucess'] = True
+            messages.success(request, 'Os dados de sua contas foram alterados com sucesso')
+            return redirect('accounts:dashboard')
+            
     else:
         form = EditAccountForm(instance=request.user)
     context['form'] = form
