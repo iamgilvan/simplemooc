@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 class CourseManager(models.Manager):
@@ -31,7 +32,33 @@ class Course(models.Model):
 
 	class Meta:
 		"""docstring for Meta"""
-		verbose_name        = 'Curso'
-		verbose_name_plural = 'Cursos'
+		verbose_name        = 'Course'
+		verbose_name_plural = 'Courses'
 		ordering            = ['name']
 			
+class Enrollment(models.Model):
+	STATUS_CHOICES  = (
+		(0, 'Pendente'),
+		(1, 'Aprovado'),
+		(2, 'Cancelado'),
+	)
+
+	user = models.ForeignKey(
+		settings.AUTH_USER_MODEL, verbose_name='User', related_name='enrollments'
+	)
+
+	course = models.ForeignKey(
+		Course, verbose_name='Course', related_name='enrollments'
+	)
+
+	status = models.IntegerField(
+		'Situation', choices=STATUS_CHOICES, default=0, blank=True
+	)
+
+	create_at   = models.DateTimeField('Create in ', auto_now_add=True)
+	update_at   = models.DateTimeField('Update in ', auto_now=True)
+
+	class Meta:
+		verbose_name        = 'Enrollment'
+		verbose_name_plural = 'Enrollments'
+		unique_together     = (('user', 'course'),)
