@@ -17,13 +17,13 @@ class Course(models.Model):
 	about       = models.TextField('About the Course', blank=True)
 	start_date  = models.DateField('Start Date', null=True, blank=True)
 	image       = models.ImageField(upload_to='courses/image', verbose_name='Image', null=True, blank=True)
-	create_at   = models.DateTimeField('Create in ', auto_now_add=True)
-	update_at   = models.DateTimeField('Update in ', auto_now=True)
+	created_at   = models.DateTimeField('Create in ', auto_now_add=True)
+	updated_at   = models.DateTimeField('Update in ', auto_now=True)
 	objects     = CourseManager()
 
 	def __str__(self):
 		return self.name
-	
+
 	@models.permalink
 	def get_absolute_url(self):
     	#from django.core.urlresolvers import reverse
@@ -35,7 +35,7 @@ class Course(models.Model):
 		verbose_name        = 'Course'
 		verbose_name_plural = 'Courses'
 		ordering            = ['name']
-			
+
 class Enrollment(models.Model):
 	STATUS_CHOICES  = (
 		(0, 'Pendant'),
@@ -55,8 +55,8 @@ class Enrollment(models.Model):
 		'Situation', choices=STATUS_CHOICES, default=0, blank=True
 	)
 
-	create_at   = models.DateTimeField('Create in ', auto_now_add=True)
-	update_at   = models.DateTimeField('Update in ', auto_now=True)
+	created_at   = models.DateTimeField('Create in ', auto_now_add=True)
+	updated_at   = models.DateTimeField('Update in ', auto_now=True)
 
 	#ativar o aluno
 	def active(self):
@@ -71,3 +71,35 @@ class Enrollment(models.Model):
 		verbose_name        = 'Enrollment'
 		verbose_name_plural = 'Enrollments'
 		unique_together     = (('user', 'course'),)
+
+# Anúncios do curso
+class Announcement(models.Model):
+	course = models.ForeignKey(Course, verbose_name='course')
+	title  = models.CharField('Title', max_length=100)
+	content= models.TextField('Content')
+
+	created_at   = models.DateTimeField('Create in ', auto_now_add=True)
+	updated_at   = models.DateTimeField('Update in ', auto_now=True)
+
+	def __str__(self):
+		return self.title
+
+	class Meta:
+		verbose_name        = 'Announcement'
+		verbose_name_plural = 'Announcements'
+		ordering            = ['-created_at']
+
+# Comentários do curso
+class Comment(models.Model):
+	announcements = models.ForeignKey(Announcement, verbose_name='Announcement', related_name='comments')
+	user          = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='user')
+	comments      = models.TextField('Comments')
+
+
+	created_at   = models.DateTimeField('Create in ', auto_now_add=True)
+	updated_at   = models.DateTimeField('Update in ', auto_now=True)
+
+	class Meta:
+		verbose_name        = 'Comment'
+		verbose_name_plural = 'Comments'
+		ordering            = ['created_at']
