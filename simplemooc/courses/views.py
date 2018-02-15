@@ -80,6 +80,7 @@ def announcements(request, slug):
             return redirect('accounts:dashboard')
     tamplate = 'courses/announcements.html'
     context  = {
-        'course': course
+        'course': course,
+        'announcements': course.announcements.all()
     }
     return render(request, tamplate, context)
