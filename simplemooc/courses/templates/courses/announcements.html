@@ -3,8 +3,8 @@
 {% block dashboard_content %}
 {% for announcement in announcements %}
 <div class="well">
-    <h2>{{ annoucement.title }}</h2>
-    {{ annoucement.content|linebreaks }}
+    <h2>{{ announcement.title }}</h2>
+    {{ announcement.content|linebreaks }}
     <p>
         <a href="#comments" title=""><i class="fa fa-comments-o"></i>1
             {% with comments_count=announcments.comments.count %}

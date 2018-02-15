@@ -10,3 +10,4 @@ class CourseAdmin(admin.ModelAdmin):
 	prepopulated_fields = {'slug': ('name',)}
 
 admin.site.register(Course, CourseAdmin)
+admin.site.register([Enrollment, Announcement, Comment])
