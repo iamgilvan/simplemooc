@@ -91,9 +91,9 @@ class Announcement(models.Model):
 
 # Comentários do curso
 class Comment(models.Model):
-	announcements = models.ForeignKey(Announcement, verbose_name='Announcement', related_name='comments')
-	user          = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='user')
-	comments      = models.TextField('Comments')
+	announcement = models.ForeignKey(Announcement, verbose_name='Announcement', related_name='comments')
+	user         = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='user')
+	comment      = models.TextField('Comments')
 
 
 	created_at   = models.DateTimeField('Create in ', auto_now_add=True)
