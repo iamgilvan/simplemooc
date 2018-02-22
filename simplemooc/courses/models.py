@@ -42,7 +42,7 @@ class Lesson(models.Model):
 
 	name        = models.CharField('Name', max_length = 100)
 	description = models.TextField('Description', blank=True)
-	number      = models.IntegerField('Númber (order)', blank=True, default=0) # Definir ordem das aulas
+	number      = models.IntegerField('Number (order)', blank=True, default=0) # Definir ordem das aulas
 	release_date= models.DateField('Date avaliable', blank=True, null=True)
 
 	#Relação com o curso
@@ -65,7 +65,7 @@ class Material(models.Model):
 	embedded    = models.TextField('Video embedded', blank=True)
 	file        = models.FileField(upload_to='lessons/materials', blank=True, null=True)
 
-	lesson      = models.ForeignKey(Lesson, verbose_name='Lasson',related_name='materials')
+	lesson      = models.ForeignKey(Lesson, verbose_name='Lesson',related_name='materials')
 
 	def is_embedded(self):
 		return bool(self.embedded)
