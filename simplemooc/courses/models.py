@@ -43,6 +43,7 @@ class Lesson(models.Model):
 	name        = models.CharField('Name', max_length = 100)
 	description = models.TextField('Description', blank=True)
 	number      = models.IntegerField('Númber (order)', blank=True, default=0) # Definir ordem das aulas
+	release_date= models.DateField('Date avaliable', blank=True, null=True)
 
 	#Relação com o curso
 	course      = models.ForeignKey(Course, verbose_name='Course', related_name='lessons')
