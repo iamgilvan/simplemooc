@@ -4,6 +4,7 @@ from django.contrib import messages
 
 from .models import Course, Enrollment, Announcement
 from .forms import ContactCourse, CommentForm
+from .decorators import enrollment_required
 
 def index(request):
     courses       = Course.objects.all()
@@ -69,14 +70,9 @@ def undo_enrollment(request, slug):
     return render(request, template, context)
 
 @login_required
+@enrollment_required
 def announcements(request, slug):
-    course = get_object_or_404(Course, slug=slug)
-    #Checar se usuário está inscrito no curso
-    if not request.user.is_staff:
-        enrollment = get_object_or_404(Enrollment,  user= request.user, course=course)
-        if not enrollment.is_approved():
-            messages.error(request, "A sua inscrição está pendente")
-            return redirect('accounts:dashboard')
+    course = request.course
     tamplate = 'courses/announcements.html'
     context  = {
         'course': course,
@@ -85,16 +81,9 @@ def announcements(request, slug):
     return render(request, tamplate, context)
 
 @login_required
+@enrollment_required
 def show_announcement(request, slug, pk):
-    course = get_object_or_404(Course, slug=slug)
-
-    #Checar se usuário está inscrito no curso
-    if not request.user.is_staff:
-        enrollment = get_object_or_404(Enrollment,  user= request.user, course=course)
-        if not enrollment.is_approved():
-            messages.error(request, "A sua inscrição está pendente")
-            return redirect('accounts:dashboard')
-
+    course = request.course
     #Obter anuncio do curso relacionado
     announcement = get_object_or_404(course.announcements.all(), pk=pk)
 
