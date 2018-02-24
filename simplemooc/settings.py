@@ -146,7 +146,7 @@ LOGOUT_URL         = 'accounts:logout'
 AUTH_USER_MODEL    = 'accounts.User'
 
 # Settings heroku
-import dj_database_url
+'''import dj_database_url
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
 
@@ -156,4 +156,4 @@ STATIC_URL = '/static/'
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-)
+)'''
