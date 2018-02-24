@@ -126,6 +126,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = 'staticfiles'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'simplemooc', 'media')
 
 MEDIA_URL  = '/media/'
