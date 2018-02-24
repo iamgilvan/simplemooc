@@ -149,9 +149,3 @@ LOGIN_URL          = 'accounts:login'
 LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_URL         = 'accounts:logout'
 AUTH_USER_MODEL    = 'accounts.User'
-
-# Settings heroku
-'''import dj_database_url
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
-'''
