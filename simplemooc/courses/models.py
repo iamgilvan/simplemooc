@@ -1,11 +1,11 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 from simplemooc.core.mail import send_mail_template
 
 # Create your models here.
 class CourseManager(models.Manager):
-	"""docstring for CourseMamodels.Manager"""
 	def Search(self, query):
 		return self.get_queryset().filter(
 			models.Q(name__icontains=query) |
@@ -32,6 +32,11 @@ class Course(models.Model):
 		#return reverse('', kwargs={'pk': self.pk})
 		return ('courses:details', (), {'slug': self.slug})
 
+	def release_lessons(self):
+		today = timezone.now().date()
+		return self.lessons.filter(release_date__gte=today)
+
+
 	class Meta:
 		"""docstring for Meta"""
 		verbose_name        = 'Course'
@@ -53,6 +58,12 @@ class Lesson(models.Model):
 
 	def __str__(self):
 		return self.name
+
+	def is_available(self):
+		if self.release_date:
+			today = timezone.now().date()
+			return self.release_date >= today
+		return False
 
 	class Meta:
 		verbose_name 		= "Lesson"
