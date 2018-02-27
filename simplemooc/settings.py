@@ -149,3 +149,8 @@ LOGIN_URL          = 'accounts:login'
 LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_URL         = 'accounts:logout'
 AUTH_USER_MODEL    = 'accounts.User'
+
+try:
+    from simplemooc.local_settings import *
+except ImportError:
+    pass
